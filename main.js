@@ -12,8 +12,8 @@ function createWindow () {
     resizable: true,
   })
 
- // win.webContents.openDevTools()
-  // and load the index.html of the app.
+// win.webContents.openDevTools() //open Dev Tools
+
   win.loadFile('main.html')
 }
 Menu.setApplicationMenu(null)

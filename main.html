@@ -67,7 +67,7 @@
       </ul>
   </div>
 </div>
-  <script src="coolprop/6.3.0/coolprop.js" type="text/javascript"></script>
+  <script src="coolprop/6.3.0/coolprop.min.js" type="text/javascript"></script>
   <script src="node_modules/vue/dist/vue.min.js"></script>
   <script>
     var myApp = new Vue({
@@ -83,26 +83,36 @@
           bv: 297.15,
           ref: "R22",
         },
-        rzt:[]
+        rzt:[],
+        timer:{}
       },
       watch: {
         para:{
           deep:true,
           handler:function(oldValue,newValue){
-            if (Module && Module.PropsSI){
-              let result=Module.PropsSI(newValue.rs, newValue.as, newValue.av, newValue.bs, newValue.bv, newValue.ref)
-              this.rzt.unshift({
-                'rs':newValue.rs, 
-                'as':newValue.as, 
-                'av':newValue.av, 
-                'bs':newValue.bs, 
-                'bv':newValue.bv, 
-                'ref':newValue.ref, 
-                'result' :result
-              })
-            }
+            clearTimeout(this.timer)  //clear timer
+            this.timer = setTimeout(()=>{   //delay execute
+              this.calc(newValue)
+            },500)
           },
           immediate: true
+        }
+      },
+      methods:{
+        calc:function(v){
+          if (Module && Module.PropsSI){
+              let result=Module.PropsSI(v.rs, v.as, v.av, v.bs, v.bv, v.ref)
+              this.rzt.unshift({
+                'rs':v.rs, 
+                'as':v.as, 
+                'av':v.av, 
+                'bs':v.bs, 
+                'bv':v.bv, 
+                'ref':v.ref, 
+                'result':result
+              })
+            }
+          if (this.rzt.length>5) this.rzt.pop() //keep last record
         }
       },
       computed: {
