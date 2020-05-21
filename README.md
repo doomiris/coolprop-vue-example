@@ -1,2 +1,2 @@
 # coolprop-js-example
-nothing for now
+coolprop, Electron, Vue
